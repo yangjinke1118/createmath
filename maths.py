@@ -6,33 +6,59 @@
 """
 from random import randint
 
-def createMath_add(type):
+def get_ab_cd(ab_max, cd_max):
+    ab = 0
+    cd = 0
+    # 获取符合要求的ab数值
+    if ab_max > 9 and ab_max <= 99:  # 当ab最大值大于9
+        ab = randint(0, ab_max)
+        while ab <= 9:
+            ab = randint(0, ab_max)  # 直到获取符合条件的ab数值,10-99
+    elif ab_max > 99 and ab_max <= 999:
+        ab = randint(0, ab_max)
+        while ab <= 99:
+            ab = randint(0, ab_max)  # 直到获取符合条件的ab数值,100-999
+    elif ab_max <= 9:
+        ab = randint(0, ab_max)
+        while ab > 9:
+            ab = randint(0, ab_max)  # 直到获取符合条件的ab数值,0-9
+
+        # 获取符合要求的cd数值
+    if cd_max > 9 and cd_max <= 99:  # 当ab最大值大于9
+        cd = randint(0, cd_max)
+        while cd <= 9:
+            cd = randint(0, cd_max)  # 直到获取符合条件的cd数值,10-99
+    elif cd_max > 99 and cd_max <= 999:
+        cd = randint(0, cd_max)
+        while cd <= 99:
+            cd = randint(0, cd_max)  # 直到获取符合条件的cd数值,100-999
+    elif cd_max <= 9:
+        cd = randint(0, cd_max)
+        while cd > 9:
+            cd = randint(0, cd_max)  # 直到获取符合条件的cd数值,0-9
+    return ab, cd
+
+
+def createMath_add(type, ab_max, cd_max):
     """
     100以内加法生成，返回加数，被加数，结果的十位、个位 数字
     type = 0：普通生成方式
     type = 1：特殊生成方式，个位必须有进位
+    ab_max表示被加数最大值上限，如果大于10，则ab不会小于10
+    cd_max表示加数最大值上限。
     """
-    b = randint(0, 9)
-    d = randint(0, 9)
-    if type == 1:
-        while b+d < 10:
-            b = randint(0, 9)
-            d = randint(0, 9)
-    if b + d >= 10:
-        a = randint(0, 9)
-        c = randint(0, 9)
-        while a+c >= 9:
-            a = randint(0, 9)
-            c = randint(0, 9)
-    else:
-        a = randint(0, 9)
-        c = randint(0, 9)
-        while a + c > 9:
-            a = randint(0, 9)
-            c = randint(0, 9)
-    math_result = a * 10 + b + c * 10 + d
-    e = math_result // 10
-    f = math_result % 10
+    if ab_max >= 100 or cd_max >= 100:
+        return -1
+
+    ab, cd = get_ab_cd(ab_max, cd_max)
+    if type == 0:  # 不进位
+        while int(str(ab)[-1]) + int(str(cd)[-1]) > 9:
+            ab, cd = get_ab_cd(ab_max, cd_max)
+    elif type == 1:  # 进位
+        while int(str(ab)[-1]) + int(str(cd)[-1]) < 9:
+            ab, cd = get_ab_cd(ab_max, cd_max)
+
+
 
     return ['+', a, b, c, d, e, f]
 
